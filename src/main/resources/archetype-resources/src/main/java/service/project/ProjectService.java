@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 package ${package}.service.project;
 
 import java.util.List;
@@ -15,8 +12,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import ${package}.entity.Project;
-import ${package}.repository.ProjectDao;
+import ${package}.entity.project.Project;
+import ${package}.repository.project.ProjectDao;
 import ${package}.xutil.enums.Operator;
 import ${package}.xutil.persistence.DynamicSpecifications;
 import ${package}.xutil.persistence.SearchFilter;

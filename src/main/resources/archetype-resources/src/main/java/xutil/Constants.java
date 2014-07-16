@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 package ${package}.xutil;
 
 /**
@@ -11,13 +8,15 @@ package ${package}.xutil;
  */
 public class Constants {
 	
+	public static final String CONTEXT_PATH="/${artifactId}";
+	
 	/** 编码格式UTF8 */
 	public static final String UTF8 = "UTF-8";
 	
 	/** 项目的物理路径,通常使用在文件保存中. 
-	 * System.getProperty("webroot.path") 通过配置监听获取项目的物理路径（解决Windows与Linux系统路径的问题）.
+	 * System.getProperty("simple.path") 通过配置监听获取项目的物理路径（解决Windows与Linux系统路径的问题）.
 	 * */
-	public static final String WEBROOT=System.getProperty("webroot.path");
+	public static final String WEBROOT=System.getProperty("${artifactId}.path");
 	
 	
 	/** 散列算法 */
@@ -51,15 +50,22 @@ public class Constants {
 	/** 日期格式 ：yyyy-MM-dd */
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	
+	/** 日期格式 ：yyyyMMdd */
+	public static final String DATE_FORMAT_SHORT = "yyyyMMdd";
+	
 	/** 日期格式 ：HH:mm:ss */
 	public static final String TIME_FORMAT = "HH:mm:ss";
 	
 	/** 日期格式数组，包含所有定义的日期格式. */
-	public static final String[] FORMAT_PATTERNS = { DATETIME_FORMAT, DATETIME_MIN_FORMAT, DATE_FORMAT, TIME_FORMAT };
+	public static final String[] FORMAT_PATTERNS = { DATETIME_FORMAT, DATETIME_MIN_FORMAT, DATE_FORMAT, DATE_FORMAT_SHORT, TIME_FORMAT };
 	
 	
 	/** 文件位置 */
 	public static final String FILESITE = "static/attachments";
+	
+	
+	/** UEditor配置文件位置 */
+	public static final String UEDITOR_CONFIG_PATH = "\\static\\js\\ueditor\\jsp\\config.json";
 
 	
 

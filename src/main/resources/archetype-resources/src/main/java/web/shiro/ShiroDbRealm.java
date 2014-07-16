@@ -1,7 +1,6 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 package ${package}.web.shiro;
+
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -17,10 +16,13 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
-import ${package}.entity.User;
-import ${package}.service.user.UserService;
+import ${package}.entity.authority.Role;
+import ${package}.entity.authority.Sidebar;
+import ${package}.entity.authority.User;
+import ${package}.service.authority.UserService;
 import ${package}.xutil.Constants;
 import ${package}.xutil.Encodes;
+import com.google.common.collect.Lists;
 
 /**
  * Shiro的安全认证.
@@ -61,7 +63,19 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
 		User user = userService.findUserByLoginName(shiroUser.loginName);
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		info.addRoles(user.getRoleList());
+		
+		//许可（资源）
+		List<String> permissions=Lists.newArrayList();
+		//角色
+		List<String> roles=Lists.newArrayList();
+		for(Role role : user.getRoles()){
+			roles.add(role.getCode());
+			for(Sidebar sidebar : role.getSidebars()){
+				permissions.add(sidebar.getCode());
+			}
+		}
+		info.addStringPermissions(permissions);
+		info.addRoles(roles);
 		return info;
 	}
 

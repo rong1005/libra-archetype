@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context" xmlns:jdbc="http://www.springframework.org/schema/jdbc"  
@@ -16,7 +13,6 @@
 	default-lazy-init="true">
 
 	<description>Spring公共配置 </description>
-	<import resource="jms/applicationContext-jms-simple.xml" />
 
 	<!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
 	<context:component-scan base-package="${package}">
@@ -111,11 +107,5 @@
 			<property name="username" value="${jdbc.username}" />
 			<property name="password" value="${jdbc.password}" />
 		</bean>
-
-		<!-- 初始化数据表结构 与默认数据-->
-		<jdbc:initialize-database data-source="dataSource" ignore-failures="ALL">
-			<jdbc:script location="classpath:sql/mysql/schema.sql" />
-			<jdbc:script location="classpath:data/mysql/import-data.sql" encoding="UTF-8"/>
-		</jdbc:initialize-database>
 	</beans>
 </beans>

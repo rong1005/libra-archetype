@@ -1,6 +1,6 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
+#set($symbol_pound ='#')
+#set($symbol_dollar ='$')
+#set($symbol_escape ='\')
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${symbol_dollar}{pageContext.request.contextPath}"/>
@@ -27,8 +27,9 @@
 	<link rel="stylesheet" type="text/css" href="${symbol_dollar}{ctx}/static/frontend_theme/js/colorbox/colorbox.min.css" />
 	<!-- CAROUSEL -->
     <link href="${symbol_dollar}{ctx}/static/frontend_theme/css/carousel.css" rel="stylesheet">
-	<!-- FONTS -->
+	<!-- FONTS 
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
+	 -->
 </head>
 <body>
 	<!-- PAGE -->

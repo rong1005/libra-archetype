@@ -1,10 +1,7 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 package ${package}.xutil.enums;
 
 /**
- * 性别
+ * 判断，用于是非的判断.
  * 
  * @author Libra
  *

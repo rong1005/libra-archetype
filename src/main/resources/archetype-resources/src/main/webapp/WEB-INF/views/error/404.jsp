@@ -1,6 +1,6 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
+#set($symbol_pound ='#')
+#set($symbol_dollar ='$')
+#set($symbol_escape ='\')
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="org.apache.shiro.web.filter.authc.FormAuthenticationFilter"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -10,7 +10,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta charset="utf-8">
-	<title>模板示例 :: 404页面不存在</title>
+	<title>简单模板 :: 404页面不存在</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 	<meta name="description" content="">
 	<meta name="author" content="Libra">
@@ -25,8 +25,9 @@
 	<link href="${symbol_dollar}{ctx}/static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 	<!-- DATE RANGE PICKER -->
 	<link rel="stylesheet" type="text/css" href="${symbol_dollar}{ctx}/static/js/bootstrap-daterangepicker/daterangepicker-bs3.css" />
-	<!-- FONTS -->
+	<!-- FONTS Google字体 速度巨慢，先注释！！
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+	 -->
 </head>
 <body id="not-found-bg">
 	<div class="overlay"></div>
@@ -73,7 +74,7 @@
 	<!-- JAVASCRIPTS -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<!-- JQUERY -->
-	<script src="${symbol_dollar}{ctx}/static/js/jquery/jquery-2.0.3.min.js"></script>
+	<script src="${symbol_dollar}{ctx}/static/js/jquery/jquery-2.1.1.min.js"></script>
 	<!-- JQUERY UI-->
 	<script src="${symbol_dollar}{ctx}/static/js/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
 	<!-- BOOTSTRAP -->

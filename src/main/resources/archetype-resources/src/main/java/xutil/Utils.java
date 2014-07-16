@@ -1,22 +1,25 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 package ${package}.xutil;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,9 +28,16 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.ui.freemarker.FreeMarkerConfigurationFactory;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import ${package}.web.shiro.ShiroUser;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 
 /**
  * 系统公用方法集.
@@ -37,8 +47,18 @@ import ${package}.web.shiro.ShiroUser;
  */
 public class Utils {
 
+	private static final Logger logger = LoggerFactory.getLogger(Utils.class); 
+	
 	/** 保存图片的字节大小 */
 	private final static int BUFFER_SIZE = 16 * 1024;
+	
+	/** 去除html的正则表达式 */
+	/** 定义script的正则表达式 */
+	private static final String regEx_script = "<script[^>]*?>[\\s\\S]*?<\\/script>"; 
+	/** 定义style的正则表达式 */
+    private static final String regEx_style = "<style[^>]*?>[\\s\\S]*?<\\/style>";
+    /** 定义HTML标签的正则表达式 */
+    private static final String regEx_html = "<[^>]+>";
 
 	/**
 	 * 取出Shiro中的当前用户. Subject才是Shiro的“用户”概念.
@@ -323,14 +343,6 @@ public class Utils {
 	}
 	
 	/**
-	 * 判断是否为空.
-	 */
-	public static boolean isNotEmpty(Collection collection) {
-		return (collection != null && !(collection.isEmpty()));
-	}
-
-	
-	/**
 	 * 文件下载
 	 * 
 	 * @param path 保存路径
@@ -515,6 +527,9 @@ public class Utils {
 				e.printStackTrace();
 				throw e;
 			} finally {
+				if(fout!=null){
+					fout.close();
+				}
 				if (fin != null) {
 					fin.close();
 				}
@@ -579,5 +594,94 @@ public class Utils {
 		}
 
 	}
+	
+	
+	/**
+	 * 往指定的HTTP服务地址发送内容.
+	 * @param url
+	 * @param content
+	 * @return
+	 */
+	public static String contentPublish(String url,String content){
+		try{
+			URL urlGet = new URL(url);
+			HttpsURLConnection http = (HttpsURLConnection) urlGet.openConnection();
+
+			// 连接超时
+			http.setConnectTimeout(25000);
+			// 读取超时 --服务器响应比较慢，增大时间
+			http.setReadTimeout(25000);
+			http.setRequestMethod("POST");
+			http.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+			http.setDoOutput(true);
+			http.setDoInput(true);
+			http.connect();
+
+			OutputStream out = http.getOutputStream();
+			out.write(content.getBytes("UTF-8"));
+			out.flush();
+			out.close();
+
+			InputStream in = http.getInputStream();
+			BufferedReader read = new BufferedReader(new InputStreamReader(in,"UTF-8"));
+			String valueString = null;
+			StringBuffer bufferRes = new StringBuffer();
+			while ((valueString = read.readLine()) != null) {
+				bufferRes.append(valueString);
+			}
+			in.close();
+			if (http != null) {
+				// 关闭连接
+				http.disconnect();
+			}
+			logger.info("publish result:{}",bufferRes.toString());
+			return bufferRes.toString();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * FreeMark模板解析，返回解析后的String.
+	 * @param masterplate
+	 * @param map
+	 * @return
+	 */
+	public static String ftlAnalyze(String masterplate,Map<String,Object> map){
+		try{
+			FreeMarkerConfigurationFactory freeMarkerConfigurationFactory=new FreeMarkerConfigurationFactory();
+			freeMarkerConfigurationFactory.setTemplateLoaderPath("classpath:/freemarker");
+		
+			Configuration configuration=freeMarkerConfigurationFactory.createConfiguration();
+			Template template=configuration.getTemplate(masterplate, "utf-8");
+			return FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
+		}catch(Exception e){
+			return null;	
+		}
+	}
+	
+	
+	/**
+	 * 去除字符串中的HTML标签，只留下文字.
+	 * @param htmlStr
+	 * @return
+	 */
+	public static String delHTMLTag(String htmlStr) {
+        Pattern p_script = Pattern.compile(regEx_script, Pattern.CASE_INSENSITIVE);
+        Matcher m_script = p_script.matcher(htmlStr);
+        htmlStr = m_script.replaceAll(""); // 过滤script标签
+
+        Pattern p_style = Pattern.compile(regEx_style, Pattern.CASE_INSENSITIVE);
+        Matcher m_style = p_style.matcher(htmlStr);
+        htmlStr = m_style.replaceAll(""); // 过滤style标签
+
+        Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
+        Matcher m_html = p_html.matcher(htmlStr);
+        htmlStr = m_html.replaceAll(""); // 过滤html标签
+
+        return htmlStr.trim(); // 返回文本字符串
+    }
 	
 }

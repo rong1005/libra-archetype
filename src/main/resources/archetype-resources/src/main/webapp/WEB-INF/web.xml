@@ -1,12 +1,11 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	version="2.5">
-	<display-name>template</display-name>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="simple" version="3.0">
 	
+	<display-name>简单项目 :: ${artifactId}</display-name>
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -14,23 +13,21 @@
 			classpath*:/applicationContext-shiro.xml
 		</param-value>
 	</context-param>
-	
+
 	<!-- 根据不同的版本进行修改 -->
 	<context-param>
 		<param-name>spring.profiles.default</param-name>
-		<!-- <param-value>production</param-value> -->
-		<param-value>development</param-value>
+		<param-value>production</param-value>
+		<!-- <param-value>development</param-value> -->
 	</context-param>
-	
-	<!-- WEBROOT START
-	项目的物理路径,通常使用在文件保存中. 
-	System.getProperty("webroot.path") 通过配置监听获取项目的物理路径（解决Windows与Linux系统路径的问题）. 
-	-->
+
+	<!-- WEBROOT START 项目的物理路径,通常使用在文件保存中. System.getProperty("simple.path") 
+		通过配置监听获取项目的物理路径（解决Windows与Linux系统路径的问题）. -->
 	<context-param>
-		<param-name>webRootPath</param-name>
-		<param-value>webroot.path</param-value>
+		<param-name>${artifactId}Path</param-name>
+		<param-value>${artifactId}.path</param-value>
 	</context-param>
-	
+
 	<listener>
 		<listener-class>${package}.xutil.listener.WebRootPathListener</listener-class>
 	</listener>
@@ -105,7 +102,9 @@
 	<session-config>
 		<session-timeout>20</session-timeout>
 	</session-config>
-
+	
+	
+	
 	<error-page>
 		<exception-type>java.lang.Throwable</exception-type>
 		<location>/WEB-INF/views/error/500_full.jsp</location>

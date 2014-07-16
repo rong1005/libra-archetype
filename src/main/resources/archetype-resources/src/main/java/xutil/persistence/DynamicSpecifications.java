@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 package ${package}.xutil.persistence;
 
 import java.util.Collection;
@@ -18,6 +15,11 @@ import org.springframework.data.jpa.domain.Specification;
 import ${package}.xutil.Collections3;
 import com.google.common.collect.Lists;
 
+/**
+ * 动态查询组合.
+ * @author Libra
+ *
+ */
 public class DynamicSpecifications {
 
 	public static <T> Specification<T> bySearchFilter(final Collection<SearchFilter> filters, final Class<T> entityClazz) {

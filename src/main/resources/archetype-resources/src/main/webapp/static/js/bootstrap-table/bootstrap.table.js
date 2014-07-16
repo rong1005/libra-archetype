@@ -13,6 +13,9 @@ var Table = function () {
     
     //访问路径
     var contextPath='';
+    
+    // 条件
+    var conditions='';
 
     //生成Table列表.
 	var createTable = function(){
@@ -33,7 +36,8 @@ var Table = function () {
 			$.each(thead.columns, function (i, c) {
 				tBodyHTML=tBodyHTML+'<td>'+n[c.field]+'</td>';
 			});
-			tBodyHTML=tBodyHTML+'<td><a class="text-info" href="'+contextPath+'/update/'+n[thead.idField]+'">修改</a> / <a class="text-danger" href="'+contextPath+'/delete/'+n[thead.idField]+'" onclick="return confirm(\'是否删除？\')">删除</a></td>';
+			
+			tBodyHTML=tBodyHTML+'<td><a class="text-info" href="'+contextPath+'/update/'+n[thead.idField]+conditions+'">修改</a> / <a class="text-danger" href="'+contextPath+'/delete/'+n[thead.idField]+conditions+'" onclick="return confirm(\'是否删除？\')">删除</a></td>';
 			tBodyHTML=tBodyHTML+'</tr>';
 		});
 		$(".table-page").children("tbody").html(tBodyHTML);
@@ -41,7 +45,7 @@ var Table = function () {
 		
 		//分页条
 		var current=data.number+1;
-		var begin=Math.max(1,current - paginationSize/2);
+		var begin=Math.max(1,Math.ceil(current - paginationSize/2));
 		var end=Math.min(begin + (paginationSize - 1), data.totalPages);
 		var pagination='<ul class="pagination" style="margin-top: 0px;">';
 		//判断当前是否第一页（禁止上一页、首页的按钮点击）
@@ -96,8 +100,14 @@ var Table = function () {
 	
 	return{
 		load: function (url) {
+			if(url.indexOf("?")>0){
+				var str = url.split("?");
+				contextPath=str[0];
+				conditions="?"+str[1];
+			}else{
+				contextPath=url;
+			}
 			loadDate(url);
-			contextPath=url;
 		},
 		
 		reLoad:function(url){

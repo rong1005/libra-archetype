@@ -1,6 +1,6 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
+#set($symbol_pound ='#')
+#set($symbol_dollar ='$')
+#set($symbol_escape ='\')
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator" %>  
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -10,7 +10,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta charset="utf-8">
-	<title>模板示例 :: <sitemesh:title/></title>
+	<title>简单模板 :: <sitemesh:title/></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 	<meta name="description" content="">
 	<meta name="author" content="Libra">
@@ -27,9 +27,10 @@
 	
 	<link href="${symbol_dollar}{ctx}/static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 	
-	<!-- FONTS -->
+	<!-- FONTS Google字体 速度巨慢，先注释！！
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
-	
+	 -->
+	 
 	<!-- 弹出框 -->
 	<link href="${symbol_dollar}{ctx}/static/js/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" />
   	<link href="${symbol_dollar}{ctx}/static/js/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" />

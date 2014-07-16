@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 package ${package}.xutil.listener;
 
 import javax.servlet.ServletContextEvent;
@@ -18,10 +15,10 @@ public class WebRootPathListener extends ContextLoaderListener {
 		  
     }
     
-	/** 将取得的物理地址放入web.xml 的 webroot.path */
+	/** 将取得的物理地址放入web.xml 的 simple.path */
     public void contextInitialized(ServletContextEvent sce) {  
         String webRootPath = sce.getServletContext().getRealPath("/");  
-        System.setProperty("webroot.path" , webRootPath);  
+        System.setProperty("${artifactId}.path" , webRootPath);  
     } 
 
 }

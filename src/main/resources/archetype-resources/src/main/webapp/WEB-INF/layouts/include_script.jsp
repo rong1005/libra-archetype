@@ -1,13 +1,13 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
+#set($symbol_pound ='#')
+#set($symbol_dollar ='$')
+#set($symbol_escape ='\')
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ctx" value="${symbol_dollar}{pageContext.request.contextPath}" />
 
 <!-- 引入的JS文件放置在页面的后面，可以让页面的加载速度更快 -->
 <!-- JQUERY -->
-<script src="${symbol_dollar}{ctx}/static/js/jquery/jquery-2.0.3.min.js"></script>
+<script src="${symbol_dollar}{ctx}/static/js/jquery/jquery-2.1.1.min.js"></script>
 <!-- JQUERY UI-->
 <script src="${symbol_dollar}{ctx}/static/js/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
 <!-- BOOTSTRAP -->

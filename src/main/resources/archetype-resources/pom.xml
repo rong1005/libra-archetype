@@ -7,6 +7,13 @@
 	<packaging>war</packaging>
 	<name>Libra :: archetype :: ${artifactId}</name>
 
+
+	<!-- 
+		注意：部署到外部空间，如http://www.fjjsp.com/的Tomcat服务器时，现有的包是会报错的。
+		java.lang.ClassNotFoundException: org.apache.commons.codec.DecoderException
+		解决：添加包commons-codec-1.9
+ 	-->
+
 	<properties>
 		<!-- 主要依赖库的版本定义 -->
 		<spring.version>4.0.2.RELEASE</spring.version>
@@ -31,7 +38,7 @@
 	
 		<!-- Plugin的属性定义 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.6</java.version>
+		<java.version>1.7</java.version>
 	
 		<!-- 项目属性 -->
 		
@@ -45,6 +52,18 @@
 		<!-- <jdbc.driver.groupId>com.h2database</jdbc.driver.groupId>
 		<jdbc.driver.artifactId>h2</jdbc.driver.artifactId>
 		<jdbc.driver.version>${h2.version}</jdbc.driver.version> -->
+		
+		<!-- SQL Service Jdbc 
+		<jdbc.driver.groupId>com.microsoft.sqlserver</jdbc.driver.groupId>
+		<jdbc.driver.artifactId>sqljdbc4</jdbc.driver.artifactId>
+		<jdbc.driver.version>4.4.0</jdbc.driver.version>
+		-->
+		
+		<!-- SQL Service Jdbc 第二种 
+		<jdbc.driver.groupId>net.sourceforge.jtds</jdbc.driver.groupId>
+		<jdbc.driver.artifactId>jtds</jdbc.driver.artifactId>
+		<jdbc.driver.version>1.3.1</jdbc.driver.version>
+		-->
 		
 		<!-- MySQL -->
 		<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
@@ -209,6 +228,18 @@
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+		
+		<dependency>
+  			<groupId>org.json</groupId>
+  			<artifactId>json</artifactId>
+  			<version>20140107</version>
+		</dependency>
 		<!-- JSON end -->
 
 		<!-- LOGGING begin -->
@@ -283,8 +314,23 @@
             <version>1.4.7</version>
         </dependency>
 		<!-- 邮件 end -->
-		
 
+		<!-- 处理常用的编码方法 -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.9</version>
+		</dependency>
+		<!-- /处理常用的编码方法 -->
+		
+		<!-- 文件上传 -->
+		<dependency>
+  			<groupId>commons-fileupload</groupId>
+  			<artifactId>commons-fileupload</artifactId>
+  			<version>1.3.1</version>
+		</dependency>
+		<!-- /文件上传 -->
+		
 		<!-- TEST begin -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -381,6 +427,11 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- TEST end -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+			<version>1.0.0.RELEASE</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -467,16 +518,19 @@
 				<executions>
 					<execution>
 						<id>enforce-banned-dependencies</id>
+						<!--goal "enforce"是被忽略的：  maven-enforcer-plugin (goal "enforce") is ignored by m2e. -->
+						<!--  
 						<goals>
 							<goal>enforce</goal>
-						</goals>
+						</goals> 
+						-->
 						<configuration>
 							<rules>
 								<requireMavenVersion>
 									<version>3.2.1</version>
 								</requireMavenVersion>
 								<requireJavaVersion>
-									<version>1.6</version>
+									<version>${java.version}</version>
 								</requireJavaVersion>
 								<bannedDependencies>
 									<searchTransitive>true</searchTransitive>
